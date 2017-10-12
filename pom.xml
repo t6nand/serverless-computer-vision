@@ -59,11 +59,11 @@
                         <id>install-external</id>
                         <phase>clean</phase>
                         <configuration>
-                            <file>${basedir}/libs/opencv-320.jar</file>
+                            <file>${basedir}/libs/opencv-330.jar</file>
                             <repositoryLayout>default</repositoryLayout>
                             <groupId>org.opencv</groupId>
-                            <artifactId>opencv-320</artifactId>
-                            <version>3.2.0</version>
+                            <artifactId>opencv-330</artifactId>
+                            <version>3.3.0</version>
                             <packaging>jar</packaging>
                             <generatePom>true</generatePom>
                         </configuration>
@@ -78,8 +78,8 @@
     <dependencies>
         <dependency>
             <groupId>org.opencv</groupId>
-            <artifactId>opencv-320</artifactId>
-            <version>3.2.0</version>
+            <artifactId>opencv-330</artifactId>
+            <version>3.3.0</version>
         </dependency>
 
         <dependency>
