@@ -1,12 +1,8 @@
 package main.java.core.imagemetadataprocess;
 
-import core.profile.RequestProfiler;
-import core.utils.BashUtils;
-import exception.PeterParkerException;
-import play.Logger;
-
-import javax.annotation.Nullable;
-import javax.validation.constraints.NotNull;
+import com.drew.lang.annotations.NotNull;
+import main.java.utils.BashUtils;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class provides method for transforming image metadata of an image.
@@ -38,13 +34,10 @@ public class MetadataTransformer {
 
         boolean stripped = true;
         try {
-            RequestProfiler.startKey("STRIP_IMAGE_METADATA");
             BashUtils.runBashCommand(command);
-        } catch (PeterParkerException e) {
+        } catch (Exception e) {
             stripped = false;
-            Logger.error("Failed to strip metadata from image: " + inputImagePath, e);
-        } finally {
-            RequestProfiler.endKey("STRIP_IMAGE_METADATA");
+            System.out.println("Failed to strip metadata from image: " + inputImagePath + e);
         }
         return stripped;
     }
