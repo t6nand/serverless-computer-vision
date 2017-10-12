@@ -10,6 +10,7 @@ import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
+import java.util.Collections;
 import java.util.List;
 
 import static main.java.core.constants.Constants.FACE_DETECTION_INPUT_IMAGE_SUFFIX;
@@ -56,8 +57,8 @@ public class ProminentFeatureDetector {
             featureOfInterests = faceDetector.detectFaces(rescaledMat);
 
             // Sort in descending order using detection score
-            featureOfInterests.sort(new SortByScore());
-
+            Collections.sort(featureOfInterests, new SortByScore());
+            
             // Extract top detection score faces
             if (featureOfInterests.size() > maxNumberOfFaces) {
                 featureOfInterests = featureOfInterests.subList(0, maxNumberOfFaces);
