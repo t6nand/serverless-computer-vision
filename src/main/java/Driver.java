@@ -7,6 +7,7 @@ import main.java.core.imagemetadataprocess.ImageMetadataAnalysisResult;
 import main.java.core.imagemetadataprocess.MetadataAnalyzer;
 import main.java.core.imageprocess.ImageProcessor;
 import main.java.utils.BashUtils;
+import main.java.utils.OSUtils;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Size;
@@ -30,7 +31,26 @@ public class Driver {
             System.out.println("Attempting to load OPENCV Native Library: ");
             String baseDirPath = (BashUtils.runBashCommand("pwd")).trim();
             System.out.println("Library Path currently set is: " + System.getProperty("java.library.path"));
-            System.load(baseDirPath + "/libs/" + "libopencv_java330" + ".so");
+            String nativeLibrarySuffix;
+            switch (OSUtils.getOS()) {
+
+                case WINDOWS:
+                    nativeLibrarySuffix = ".dll";
+                    break;
+                case LINUX:
+                    nativeLibrarySuffix = ".so";
+                    break;
+                case MAC:
+                    nativeLibrarySuffix = ".dylib";
+                    break;
+                default:
+                    nativeLibrarySuffix = null;
+            }
+            if (nativeLibrarySuffix == null) {
+                System.out.println("Failed to determine OS Platform. Can't proceed....");
+                System.exit(1);
+            }
+            System.load(baseDirPath + "/libs/" + "libopencv_java330" + nativeLibrarySuffix);
             System.out.println("OPENCV Native Library loaded.");
 
             // Test if loaded library is working.
@@ -47,7 +67,7 @@ public class Driver {
         }
 
         // Warm up successful. Let's handle serverless events.
-        handleFeatureDetectionEvent();
+        handleFeatureDetectionEvent("");
     }
 
     public static void main(String[] args) {
@@ -56,7 +76,26 @@ public class Driver {
             System.out.println("Attempting to load WEBP Native Library: ");
             String baseDirPath = (BashUtils.runBashCommand("pwd")).trim();
             System.out.println("Library Path: " + System.getProperty("java.library.path"));
-            System.load(baseDirPath + "/libs/" + "libopencv_java330" + ".so");
+            String nativeLibrarySuffix;
+            switch (OSUtils.getOS()) {
+
+                case WINDOWS:
+                    nativeLibrarySuffix = ".dll";
+                    break;
+                case LINUX:
+                    nativeLibrarySuffix = ".so";
+                    break;
+                case MAC:
+                    nativeLibrarySuffix = ".dylib";
+                    break;
+                default:
+                    nativeLibrarySuffix = null;
+            }
+            if (nativeLibrarySuffix == null) {
+                System.out.println("Failed to determine OS Platform. Can't proceed....");
+                System.exit(1);
+            }
+            System.load(baseDirPath + "/libs/" + "libopencv_java330" + nativeLibrarySuffix);
             System.out.println("WEBP Native Library loaded.");
             Mat mat = Imgcodecs.imread(baseDirPath + "/test.jpeg");
             System.out.println(mat);
@@ -71,10 +110,13 @@ public class Driver {
             e.printStackTrace();
             System.exit(1);
         }
+
+        Driver driver = new Driver();
+
+        driver.handleFeatureDetectionEvent("");
     }
 
-    private void handleFeatureDetectionEvent() {
-        String imagePath = "";
+    private void handleFeatureDetectionEvent(String imagePath) {
         Metadata metadata = ImageProcessor.getMetadata(imagePath);
         imageMetadataAnalysisResult = MetadataAnalyzer.analyzeImage(metadata);
         detectProminentFeaturesInImage(imagePath);

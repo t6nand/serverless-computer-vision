@@ -58,7 +58,7 @@ public class ProminentFeatureDetector {
 
             // Sort in descending order using detection score
             Collections.sort(featureOfInterests, new SortByScore());
-            
+
             // Extract top detection score faces
             if (featureOfInterests.size() > maxNumberOfFaces) {
                 featureOfInterests = featureOfInterests.subList(0, maxNumberOfFaces);
