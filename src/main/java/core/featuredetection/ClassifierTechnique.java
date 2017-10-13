@@ -8,15 +8,15 @@ import org.opencv.core.Size;
  */
 public enum ClassifierTechnique {
     HAAR_FRONTAL_FACE("Frontal Face(Haar)",
-            "src/main/java/resources/facedetectionclassifiers/haarcascade_frontalface_alt_tree.xml",
+            "haarcascade_frontalface_alt_tree.xml",
             "_haar-frontal-default", new Size(20, 20), new Scalar(0, 0, 255)),
 
     HAAR_PROFILE_FACE("Profile Face(Haar)",
-            "src/main/java/resources/facedetectionclassifiers/haarcascade_profileface.xml",
+            "haarcascade_profileface.xml",
             "_haar-profile-default", new Size(20, 20), new Scalar(255, 255, 0)),
 
     LBP_FACE_VISIONARY("Face(visionary)",
-            "src/main/java/resources/facedetectionclassifiers/visionary_FACES_01_LBP_5k_7k_50x50.xml",
+            "visionary_FACES_01_LBP_5k_7k_50x50.xml",
             "_haar-face-vis", new Size(50, 50), new Scalar(0, 255, 255));
 
     String techniqueFriendlyName;

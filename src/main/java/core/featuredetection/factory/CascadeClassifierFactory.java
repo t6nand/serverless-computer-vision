@@ -4,6 +4,9 @@ import main.java.core.featuredetection.ClassifierTechnique;
 import main.java.core.featuredetection.FaceDetectorException;
 import org.opencv.objdetect.CascadeClassifier;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.concurrent.BlockingDeque;
@@ -37,11 +40,17 @@ public class CascadeClassifierFactory {
         for (ClassifierTechnique value : values) {
 
             freeCascadeClassifiers.put(value, new LinkedBlockingDeque<CascadeClassifier>(MAX_NUM_CLASSIFIERS));
+            String tempDir = "/tmp/classifier";
+            Path tmp = null;
+            try {
+                tmp = Files.createTempFile(tempDir, "cv");
+                Files.copy(this.getClass().getResourceAsStream("resource/facedetectionclassifiers/" + value.getResourceUrl()), tmp);
+            } catch (IOException e) {
+                System.out.println("Failed to fetch resources. Can't proceed........");
+                System.exit(1);
+            }
             for (int j = 0; j < MAX_NUM_CLASSIFIERS; j++) {
-                CascadeClassifier cascadeClassifier = new CascadeClassifier();
-                if (!cascadeClassifier.load(value.getResourceUrl())) {
-                    throw new FaceDetectorException("Unable to load Classifier file: " + value.getResourceUrl());
-                }
+                CascadeClassifier cascadeClassifier = new CascadeClassifier(tmp.toString());
                 freeCascadeClassifiers.get(value).add(cascadeClassifier);
             }
         }
